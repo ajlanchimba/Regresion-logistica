@@ -1,0 +1,119 @@
+---
+title: "Clasificacion - Regresion logistica"
+author: "Alexis Lanchimba"
+format:
+  html:
+    toc: true
+    toc_title: "Tabla de Contenido"
+    toc_depth: 4
+execute:
+  echo: true  # Mostrar el código de R
+  warning: false  # Ocultar advertencias
+  error: false  # Ocultar errores
+  message: false  # Ocultar mensajes
+---
+
+# Cargar librerias
+
+```{r}
+#| label: Cargar librerias
+
+library(tidyverse)
+library(tidymodels)
+library(GGally)
+library(skimr)
+library(nortest)
+library(car)
+library(performance)
+library(carData)
+library(janitor)
+```
+# Cargar datos
+
+El conjunto de datos, denominado "TitanicSurvival", contiene información sobre los pasajeros del Titanic, incluyendo si sobrevivieron o no al hundimiento del barco. Los datos se pueden cargar con la función `data()` de R. Los datos contienen las siguientes variables:
+- Superviviencia: indica si el pasajero sobrevivió o no al hundimiento del Titanic.
+
+
+```{r}
+#| label: Cargar datos
+
+titanic_sur <- TitanicSurvival
+head(titanic_sur)
+```
+## Analisis exploratorio de datos EDA
+
+`str()` y `glimpse()` son dos funciones que se pueden utilizar para obtener información sobre la estructura de un conjunto de datos. La función `str()` proporciona información sobre la estructura de un objeto en R, incluyendo el tipo de datos de cada columna y la longitud del objeto. La función `glimpse()` proporciona información similar, pero en un formato más legible.
+
+`skim()` es una función que proporciona un resumen de las estadísticas descriptivas de un conjunto de datos, incluyendo el número de observaciones, el número de variables, el número de valores faltantes, la media, la mediana, la desviación estándar, el mínimo y el máximo de cada variable.
+
+
+`table()` es una función que se puede utilizar para obtener una tabla de frecuencias de una variable categórica. En este caso, se utiliza para obtener una tabla de frecuencias de la variable "survived" del conjunto de datos "titanic_sur".
+
+`tabyl()` es una función que se puede utilizar para obtener una tabla de frecuencias de una variable categórica. En este caso, se utiliza para obtener una tabla de frecuencias de la variable "survived" del conjunto de datos "titanic_sur".
+
+`count()` es una función que se puede utilizar para contar el número de observaciones en cada grupo de una variable categórica. En este caso, se utiliza para contar el número de observaciones en cada grupo de la variable "survived" del conjunto de datos "titanic_sur".
+
+`group_by()` y `summarise()` son funciones que se pueden utilizar para agrupar un conjunto de datos por una variable categórica y calcular estadísticas resumen para cada grupo. En este caso, se utiliza para agrupar el conjunto de datos "titanic_sur" por la variable "survived" y calcular el número de observaciones en cada grupo.
+
+```{r}
+#| label: Analisis exploratorio de datos EDA
+
+str(titanic_sur)
+glimpse(titanic_sur)
+skim(titanic_sur)
+
+
+table(titanic_sur$survived)
+
+titanic_sur |> group_by(survived) |> summarise(recuento = n())
+
+titanic_sur |> count(survived)
+
+titanic_sur |> tabyl(survived)
+```
+`adorn_pct_formatting()` es una función que se puede utilizar para dar formato a una tabla de frecuencias para que los valores se muestren como porcentajes en lugar de recuentos. En este caso, se utiliza para dar formato a la tabla de frecuencias de la variable "survived" del conjunto de datos "titanic_sur".
+
+
+```{r}
+tabla_sur <- titanic_sur |> tabyl(survived) |> adorn_pct_formatting()
+tabla_sur
+```
+
+```{r}
+odds_sur <- tabla_sur[2,2]/tabla_sur[1,2] #500/809
+odds_sur
+```
+Las personas que sobrevivieron al Titanic tienen 0.618 veces más probabilidades de sobrevivir que las personas que no sobrevivieron.
+
+```{r}
+
+1/odds_sur
+```
+Las personas que no sobrevivieron al Titanic tienen 1.618 veces más probabilidades de no sobrevivir que las personas que sobrevivieron.
+
+### Variables predictoras
+
+```{r}
+#| label: Variables predictoras
+
+tabyl(titanic_sur$sex)
+```
+```{r}
+tabyl(titanic_sur$passengerClass)
+```
+```{r}
+summary(titanic_sur$age)
+
+hist(titanic_sur$age)
+```
+
+### Correlaciones
+
+```{r}
+tabla_sur_sex <- titanic_sur |> tabyl(survived, sex)
+tabla_sur_sex
+```
+```{r}
+
+```
+
