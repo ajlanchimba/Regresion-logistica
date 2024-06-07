@@ -114,6 +114,71 @@ tabla_sur_sex <- titanic_sur |> tabyl(survived, sex)
 tabla_sur_sex
 ```
 ```{r}
+g1 <- table(titanic_sur$survived, titanic_sur$sex)
+mosaicplot(g1, color = c("red", "blue"))
 
+chisq.test(tabla_sur_sex)
+
+#Ho: Independencia = 0
+#Ha: Independencia != 0
 ```
 
+```{r}
+tabla_sur_clase <- titanic_sur |> tabyl(survived, passengerClass)
+
+tabla_sur_clase
+```
+```{r}
+chisq.test(tabla_sur_clase) #Prueba de chi cuadrado
+
+#Ho: Independencia = 0
+#Ha: Independencia != 0
+```
+```{r}
+titanic_sur |> tabyl(passengerClass) #Frecuencia de clases
+```
+
+
+```{r}
+titanic_sur |> ggplot(aes(survived, age, fill = survived))+geom_boxplot()
+
+
+plot(titanic_sur$age, titanic_sur$survived)
+
+t.test(age~survived, data = titanic_sur) #Prueba de t de dos muestras
+
+lillie.test(titanic_sur$age) #Prueba de normalidad
+
+wilcox.test(age~survived, data = titanic_sur) #Prueba de Wilcoxon de dos muestras para probar que son independientes porque es una variable numerica y una categorica.
+
+#Ho: Media de edad de sobrevivientes = Media de edad de no sobrevivientes
+#Ha: Media de edad de sobrevivientes != Media de edad de no sobrevivientes
+```
+
+# Regresion logistica tradicional, con una variable
+
+`glm()` es una función que se puede utilizar para ajustar un modelo de regresión logística en R. La función toma como argumento la fórmula del modelo y los datos en los que se ajustará el modelo. En este caso, se ajusta un modelo de regresión logística para predecir la supervivencia de los pasajeros del Titanic en función de su sexo.
+
+
+ya no hago la particion, utilizo todos los datos
+```{r}
+#| label: Regresion logistica tradicional, con una variable
+
+reg_log <- glm(survived ~ sex, data =  titanic_sur, family = binomial())
+reg_log
+
+summary(reg_log)
+
+coef(reg_log) #Coeficientes
+
+confint(reg_log) #Intervalos de confianza
+
+exp(coef(reg_log)) #Odds ratio
+
+1/0.088439354
+
+plogis(coef(reg_log)) #Probabilidad de sobrevivir
+```
+Las mujeres tienen 11.3 veces más probabilidades de sobrevivir que los hombres.
+
+ 

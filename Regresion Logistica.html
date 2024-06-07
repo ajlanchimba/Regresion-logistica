@@ -83,7 +83,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#cargar-librerias" id="toc-cargar-librerias" class="nav-link active" data-scroll-target="#cargar-librerias">Cargar librerias</a></li>
   <li><a href="#cargar-datos" id="toc-cargar-datos" class="nav-link" data-scroll-target="#cargar-datos">Cargar datos</a>
   <ul class="collapse">
-  <li><a href="#analisis-exploratorio-de-datos-eda" id="toc-analisis-exploratorio-de-datos-eda" class="nav-link" data-scroll-target="#analisis-exploratorio-de-datos-eda">Analisis exploratorio de datos EDA</a></li>
+  <li><a href="#analisis-exploratorio-de-datos-eda" id="toc-analisis-exploratorio-de-datos-eda" class="nav-link" data-scroll-target="#analisis-exploratorio-de-datos-eda">Analisis exploratorio de datos EDA</a>
+  <ul class="collapse">
+  <li><a href="#variables-predictoras" id="toc-variables-predictoras" class="nav-link" data-scroll-target="#variables-predictoras">Variables predictoras</a></li>
+  <li><a href="#correlaciones" id="toc-correlaciones" class="nav-link" data-scroll-target="#correlaciones">Correlaciones</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -125,7 +129,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(carData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(carData)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="cargar-datos" class="level1">
@@ -146,6 +151,12 @@ Anderson, Mr. Harry                  yes   male 48.0000            1st</code></p
 </div>
 <section id="analisis-exploratorio-de-datos-eda" class="level2">
 <h2 class="anchored" data-anchor-id="analisis-exploratorio-de-datos-eda">Analisis exploratorio de datos EDA</h2>
+<p><code>str()</code> y <code>glimpse()</code> son dos funciones que se pueden utilizar para obtener información sobre la estructura de un conjunto de datos. La función <code>str()</code> proporciona información sobre la estructura de un objeto en R, incluyendo el tipo de datos de cada columna y la longitud del objeto. La función <code>glimpse()</code> proporciona información similar, pero en un formato más legible.</p>
+<p><code>skim()</code> es una función que proporciona un resumen de las estadísticas descriptivas de un conjunto de datos, incluyendo el número de observaciones, el número de variables, el número de valores faltantes, la media, la mediana, la desviación estándar, el mínimo y el máximo de cada variable.</p>
+<p><code>table()</code> es una función que se puede utilizar para obtener una tabla de frecuencias de una variable categórica. En este caso, se utiliza para obtener una tabla de frecuencias de la variable “survived” del conjunto de datos “titanic_sur”.</p>
+<p><code>tabyl()</code> es una función que se puede utilizar para obtener una tabla de frecuencias de una variable categórica. En este caso, se utiliza para obtener una tabla de frecuencias de la variable “survived” del conjunto de datos “titanic_sur”.</p>
+<p><code>count()</code> es una función que se puede utilizar para contar el número de observaciones en cada grupo de una variable categórica. En este caso, se utiliza para contar el número de observaciones en cada grupo de la variable “survived” del conjunto de datos “titanic_sur”.</p>
+<p><code>group_by()</code> y <code>summarise()</code> son funciones que se pueden utilizar para agrupar un conjunto de datos por una variable categórica y calcular estadísticas resumen para cada grupo. En este caso, se utiliza para agrupar el conjunto de datos “titanic_sur” por la variable “survived” y calcular el número de observaciones en cada grupo.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(titanic_sur)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -301,7 +312,175 @@ $ passengerClass &lt;fct&gt; 1st, 1st, 1st, 1st, 1st, 1st, 1st, 1st, 1st, 1st, 1
 </tbody>
 </table>
 </div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(titanic_sur<span class="sc">$</span>survived)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ no yes 
+809 500 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>titanic_sur <span class="sc">|&gt;</span> <span class="fu">group_by</span>(survived) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">recuento =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  survived recuento
+  &lt;fct&gt;       &lt;int&gt;
+1 no            809
+2 yes           500</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>titanic_sur <span class="sc">|&gt;</span> <span class="fu">count</span>(survived)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  survived   n
+1       no 809
+2      yes 500</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>titanic_sur <span class="sc">|&gt;</span> <span class="fu">tabyl</span>(survived)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> survived   n  percent
+       no 809 0.618029
+      yes 500 0.381971</code></pre>
+</div>
+</div>
+<p><code>adorn_pct_formatting()</code> es una función que se puede utilizar para dar formato a una tabla de frecuencias para que los valores se muestren como porcentajes en lugar de recuentos. En este caso, se utiliza para dar formato a la tabla de frecuencias de la variable “survived” del conjunto de datos “titanic_sur”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tabla_sur <span class="ot">&lt;-</span> titanic_sur <span class="sc">|&gt;</span> <span class="fu">tabyl</span>(survived) <span class="sc">|&gt;</span> <span class="fu">adorn_pct_formatting</span>()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>tabla_sur</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> survived   n percent
+       no 809   61.8%
+      yes 500   38.2%</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>odds_sur <span class="ot">&lt;-</span> tabla_sur[<span class="dv">2</span>,<span class="dv">2</span>]<span class="sc">/</span>tabla_sur[<span class="dv">1</span>,<span class="dv">2</span>] <span class="co">#500/809</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>odds_sur</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.618047</code></pre>
+</div>
+</div>
+<p>Las personas que sobrevivieron al Titanic tienen 0.618 veces más probabilidades de sobrevivir que las personas que no sobrevivieron.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span>odds_sur</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.618</code></pre>
+</div>
+</div>
+<p>Las personas que no sobrevivieron al Titanic tienen 1.618 veces más probabilidades de no sobrevivir que las personas que sobrevivieron.</p>
+<section id="variables-predictoras" class="level3">
+<h3 class="anchored" data-anchor-id="variables-predictoras">Variables predictoras</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tabyl</span>(titanic_sur<span class="sc">$</span>sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> titanic_sur$sex   n   percent
+          female 466 0.3559969
+            male 843 0.6440031</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tabyl</span>(titanic_sur<span class="sc">$</span>passengerClass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> titanic_sur$passengerClass   n   percent
+                        1st 323 0.2467532
+                        2nd 277 0.2116119
+                        3rd 709 0.5416348</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(titanic_sur<span class="sc">$</span>age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.1667 21.0000 28.0000 29.8811 39.0000 80.0000     263 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(titanic_sur<span class="sc">$</span>age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Regresion-Logistica_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="correlaciones" class="level3">
+<h3 class="anchored" data-anchor-id="correlaciones">Correlaciones</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>tabla_sur_sex <span class="ot">&lt;-</span> titanic_sur <span class="sc">|&gt;</span> <span class="fu">tabyl</span>(survived, sex)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>tabla_sur_sex</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> survived female male
+       no    127  682
+      yes    339  161</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">table</span>(titanic_sur<span class="sc">$</span>survived, titanic_sur<span class="sc">$</span>sex)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(g1, <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Regresion-Logistica_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(tabla_sur_sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  tabla_sur_sex
+X-squared = 363.62, df = 1, p-value &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Ho: Independencia = 0</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Ha: Independencia != 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>tabla_sur_clase <span class="ot">&lt;-</span> titanic_sur <span class="sc">|&gt;</span> <span class="fu">tabyl</span>(survived, passengerClass)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>tabla_sur_clase</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> survived 1st 2nd 3rd
+       no 123 158 528
+      yes 200 119 181</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(tabla_sur_clase)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test
+
+data:  tabla_sur_clase
+X-squared = 127.86, df = 2, p-value &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Ho: Independencia = 0</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Ha: Independencia != 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>titanic_sur <span class="sc">|&gt;</span> <span class="fu">tabyl</span>(passengerClass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> passengerClass   n   percent
+            1st 323 0.2467532
+            2nd 277 0.2116119
+            3rd 709 0.5416348</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>titanic_sur <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(survived, age, <span class="at">fill =</span> survived))<span class="sc">+</span><span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Regresion-Logistica_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(titanic_sur<span class="sc">$</span>age, titanic_sur<span class="sc">$</span>survived)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Regresion-Logistica_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </section>
 </section>
 
